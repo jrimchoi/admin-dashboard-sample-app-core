@@ -42,7 +42,7 @@ namespace AdminDashboard
                 // Cookie settings
                 options.LoginPath = "/Login";
             });
-            services.AddRazorPages().AddJsonOptions(options =>
+            services.AddRazorPages().AddRazorRuntimeCompilation().AddJsonOptions(options =>
                 options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
             // Add the Kendo UI services to the services container.
