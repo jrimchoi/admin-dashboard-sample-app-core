@@ -1,0 +1,29 @@
+﻿@using DSELN.Cmm.Utils
+@{
+        Layout = null;  
+
+        string _DEFAULT_VIEW_URL = ConfigUtil.getSectionValue("Las:Defaul_View");
+        //Console.WriteLine("_DEFAULT_VIEW_URL : " + _DEFAULT_VIEW_URL);
+}
+
+@*<div class="text-center">
+    <div class="jumbotron">
+        <h1 class="display-4">@str</h1> 
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+</div>*@
+
+@*@Html.RouteLink("Move", "EquipList", "Equip");*@
+@* @await Html.PartialAsync("_TeaacherTable");  *@
+@* @await Html.PartialAsync("/Sample/_TeacherTable", Model) *@
+
+<script>
+    ////var json = '@Html.Raw(Json.Serialize(ViewBag._USER_MENU))'; 
+    ////window.localStorage.setItem("_USER_MENU_JSON", json);   // 로컬스토리지에 담아서 메뉴클릭시마다 다시 조회하지 않겠다.  --> 변경)세션에 담아서 처리함. 
+
+    //var url = "/Equip/EquipList";  // 초기화면 
+    var url = ("/" + "@_DEFAULT_VIEW_URL").replace(/\/\//gi, "\/"); 
+ 
+    window.location.href = url; 
+
+</script>

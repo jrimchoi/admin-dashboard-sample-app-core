@@ -1,0 +1,1120 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc
+@using DSELN.Cmm.Utils
+@using Newtonsoft.Json;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    string SESSION_USER_ROLE =  HttpContextAccessor.HttpContext.Session.GetString(Const.SESSION_USER_ROLE) as string ?? string.Empty;
+    string SESSION_USER_DEPT_CD =  HttpContextAccessor.HttpContext.Session.GetString(Const.SESSION_USER_DEPT_CD) as string ?? string.Empty;
+    string SESSION_USER_POSITION_CD =  HttpContextAccessor.HttpContext.Session.GetString(Const.SESSION_USER_POSITION_CD) as string ?? string.Empty;
+    string SESSION_USER_BU_CD =  HttpContextAccessor.HttpContext.Session.GetString(Const.SESSION_USER_BU_CD) as string ?? string.Empty;
+}
+
+<!-- **********************************************************************  -->
+<!-- *****************************  html body *****************************  -->
+<!-- **********************************************************************  -->
+
+      <!-- 내용 -->
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header"> 
+ 
+	        <div id="pageHeadDiv" >
+                    <table>
+                              <tbody>
+                                         <tr>
+                                                <td class="page-title">
+                                                        <h2 id="ph">관리자 DASHBOARD</h2>
+                                                        <h3 id="sph"></h3>
+                                                </td>
+                                         </tr>
+                              </tbody>
+                   </table>
+	        </div>
+        </section>
+        
+        <!-- Main content -->
+        <section class="content">
+
+         <div class="row">
+           <!-- 내용 -->
+           <div class="col-xs-12">
+                
+		            <!-- table 하나 -->
+		        <div id="box" class="box" style="height:100%;">
+			        <div id="parent" class="box-body">
+			    	</div>
+		    	</div><!-- box -->
+		       </div><!-- col-xs-12 -->
+		     </div><!-- row -->
+		     
+	         <div class="row">
+	           <!-- 내용 -->
+	           <div class="col-xs-12">
+	                  <form id="formCond" name="formCond"  method="post" >
+                                <div id="condition" class="condition" > 
+									<table border="0" summary="조회조건" width="100%">
+										<col style="width:100%" />	
+										<tbody>
+											<tr>  <!-- 2행  -->
+				 								<td>
+                                                     <div id="period" align="left">
+													    <button id="btn1Month" type="button" class="search" _month="1" onclick="fnPeriodClick(this)">1개월</button>
+													    <button id="btn3Month" type="button" class="search" _month="3" onclick="fnPeriodClick(this)">3개월</button>
+													    <button id="btn6Month" type="button" class="search" _month="6" onclick="fnPeriodClick(this)">6개월</button>
+													    <button id="btn12Month" type="button" class="search" _month="12" onclick="fnPeriodClick(this)">12개월</button>
+                                                        <input id="PERIOD" name="PERIOD" value="12"  _data-input-type="textbox" hidden />
+
+                                                        <label for="BU_CODE_Q" style="width:120px; text-align:right; margin-right:8px;" >BU</label>
+                                                        <input id="BU_CODE_Q" name="BU_CODE" _data-input-type="combobox" _data-code-ds="BU_CODE"  _defaultvalue="" style="width:240px;" required/>
+
+                                                        <label for="TEAM_CODE_Q" style="width:120px; text-align:right; margin-right:8px;" class="bluetext">팀</label>
+                                                        <input id="TEAM_CODE_Q" name="TEAM_CODE_FILTER" _data-input-type="combobox" _data-code-ds="DASHBOARD_TEAM_CODE"  _defaultvalue="" style="width:240px;"/>
+
+                                                     </div>
+				 								</td>
+											</tr>
+										</tbody>
+									</table>   
+                 
+                            </div>
+                      </form>
+			              <!-- table 하나 -->
+			              <div id="box" class="box">
+	 
+				                <div id="parent" class="box-body">
+                                    <div id="tabstrip" >
+                                         <ul style="width:110px;">
+                                                <li id="btn_ShowNote" onclick="TR.ShowNote()" >
+                                                    연구노트
+                                                </li>
+                                                <li id="btn_ShowTemp" onclick="TR.ShowNote()">
+                                                    템플릿
+                                                </li>
+                                                <li id="btn_ShowResult" onclick="TR.ShowNote()">
+                                                    실험결과확인
+                                                </li>
+                                            </ul>
+                                            <div style="width: 100%;"><!--연구노트-->
+                                                <div style="width: 45%;  float: left; height:100%;">    
+                                                     <div id="noteChartAll" style="height: 49%;"></div>
+                                                     <div id="noteChartMW" style="height: 49%; "></div>
+                                                </div>
+                                                <div  style="margin-left: 45%;">
+                                                   <div id="gridNote"></div>
+                                                </div>
+                                            </div>
+                                            <div style="width: 100%;"><!--템플릿-->
+                                                <div style="width: 45%;  float: left; height:100%;">    
+                                                     <div id="templateChartAll" style="height: 49%;"></div>
+                                                     <div id="templateChartMW" style="height: 49%; "></div>
+                                                </div>
+                                                <div  style="margin-left: 45%;">
+                                                   <div id="gridTemplate"></div>
+                                                </div>
+                                            </div>
+                                            <div style="width: 100%;"><!--실험결과-->
+                                                <div style="width: 45%;  float: left; height:100%;">    
+                                                     <div id="expChartAll" style="height: 49%;"></div>
+                                                     <div id="expChartMW" style="height: 49%; "></div>
+                                                </div>
+                                                <div  style="margin-left: 45%;">
+                                                   <div id="gridExp"></div>
+                                                </div>
+                                            </div>
+                                    </div>
+				    			</div>
+			    			
+			    		</div><!-- box -->
+
+		       </div><!-- col-xs-12 -->
+		     </div><!-- row -->
+		     
+        </section>    
+        
+      </div>
+
+<!-- ************************************************************************************************ -->
+<!-- ********************************      start of javascript            ****************************************** -->
+<!-- ************************************************************************************************ -->
+
+<script>
+    /***********************************************************************
+    // document ready 
+    ***********************************************************************/
+    // 0000. 전역변수 
+    var _dsCodeList = null;          // 공통코드 dataSource
+    var _vmCond   = null;            // 조회조건 view model (kendo.observable)
+    var _dsNote = null; 
+    var _dsTemplate = null; 
+    var _dsExp = null; 
+    var _baseUnit = "months";
+    var _page_load = false;  
+    var _search_data = null; 
+    var _noteChartData = [];
+    var _templateChartData = [];
+    var _expChartData = [];
+    var initial_data_binding = false;
+
+    // document ready 
+    $(document).ready(function () {
+         // 1010. form 초기화 
+         $("#tabstrip").kendoTabStrip({
+        tabPosition: "left",
+        animation: {
+           open: {
+               effects: "fadeIn"
+           }
+       }
+        });
+
+       
+         //var tabstrip = $("#tabstrip").data("kendoTabStrip");
+
+        fnSetForm(); 
+
+        // 2010. grid & dataSource 초기화 
+        fnSetGrid(); 
+ 
+        // 3010. view & search 
+        _page_load = true; 
+        TR.search("Q");
+
+        fnResize();
+        //TR.ShowNote();
+         
+        
+    });
+    var tabStrip = $("#tabstrip").kendoTabStrip().data("kendoTabStrip");
+        tabStrip.select("li:first");
+    // from 초기화 
+    function fnSetForm(svid){
+        // 1010. 코드 담기 : Controller ==> ViewBag.CodeList ==>  _dsCodeList  ==> select, radio 등 개별 datasource 에 적용 
+        KendoUtils.setCodeList('@Html.Raw(Json.Serialize(ViewBag.CodeList))');  
+ 
+        // 2010. 기본 컴포넌트 생성 (input --> kendo component ) / form tag & name attr required 
+        _vmCond = KendoUtils.setInputKendo("formCond", "_vmCond"); 
+        
+        // 2020. BU/Team 콤보설정 
+        fnSetBUTeamCombo(); 
+
+
+        // 3010. 공통으로 처리되지 않는 UI OR 기본컴포넌트 생성외 추가설정  
+        ////fnOtherKendoUI();  
+
+        // 4010. 버튼 css
+        fnSetButtonCss("btn12Month");
+
+        // 5010. splitter bar hide 
+        //$(".k-splitbar").hide();
+    }
+ 
+    // grid & dataSource 초기화 
+    function fnSetGrid(){
+        // 1010. grid 
+        // 10. 연구노트 
+        $("#gridNote").kendoGrid({
+            dataSource: _dsNote,
+            height: $(".container").height()-200,   
+            toolbar: [
+                {template: '<span id="note_label" class="blacktext">▶ 연구노트 List</span>'}
+            ],
+            columns: [
+                {field : 'EXPERIMENTNUMBER', title:'연구노트번호', width:'60px', attributes: {style: "text-align: center;"}, model: { type: "string", editable: false, }, 
+                  template: "<a href='javascript:void(0)' onclick=\"fnGoExpNote(\'#=EXPERIMENTNUMBER#\')\">#=EXPERIMENTNUMBER#</a>",
+                },
+                {field : 'PROJECT_NAME', title:'과제명', width:'120px', attributes: {style: "text-align: left;"}, hidden:false, model: { type: "string", editable: false, }, },
+                {field : 'TITLE', title:'실험제목', width:'100px', attributes: {style: "text-align: left;"}, hidden:false, model: { type: "string", editable: false, },},
+                {field : 'BU_CODE', title:'BU_CODE', width:'60px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, }, },
+                {field : 'BU_NAME', title:'BU명', width:'60px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, }, },
+                {field : 'DEPTCODE', title:'DEPTCODE', width:'60px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, }, },
+                {field : 'DEPTNAME', title:'팀명', width:'60px', attributes: {style: "text-align: center;"}, hidden:false, model: { type: "string", editable: false, }, },
+                {field : 'USER_NAME', title:'사용자명', width:'50px', attributes: {style: "text-align: center;"}, hidden:false, model: { type: "string", editable: false, },
+                  template: "<a href='javascript:void(0)' onclick=\"fnGoUserDashBoard(\'#=USER_ID#\', \'#=USER_NAME#\', \'#=DEPTCODE#\')\">#=USER_NAME#</a>",
+                },
+                {field : 'CREATED', title:'생성일', width:'50px', attributes: {style: "text-align: center;"}, hidden:false, model: { type: "string", editable: false, },},
+                {field : 'DATE4CHART', title:'DATE4CHART', width:'50px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, },},
+                {field : 'USER_ID', title:'USER_ID', width:'50px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, },},
+            ],
+			_rowNumCol: false,   // row number column display 
+			_checkCol: false,       // check column display 
+	        editable: false, sortable: true, scrollable: true, mobile: true, resizable: true, reorderable: true, navigatable: true,
+            selectable: "multiple row",    //selectable: "multiple cell","multiple row","cell","row",
+            pageable:  false, 
+            serverPaging: true,  // --> datasource serverPaging 
+            page: function(e) {
+
+            }, 
+			change: function(e) {  // 그리드 셀 선택시 
+
+			},
+	        edit: function(e) {//Fired when the user edits or creates a data item
+
+            },
+            dataBound: function(e) { // moved in KendoUtils 
+                KendoUtils.dataBoundPost(e); 
+            },
+        });
+
+        // 20. 템플릿  
+        $("#gridTemplate").kendoGrid({
+            dataSource: _dsTemplate,
+            height: $(".container").height()-200,   
+            toolbar: [
+                {template: '<span id="template_label" class="blacktext">▶ 템플릿 List</span>'}
+            ],
+            columns: [
+                {field : 'ANAL_NAME', title:'템플릿명', width:'120px', attributes: {style: "text-align: left;"}, hidden:false, model: { type: "string", editable: false, },
+                  template: "<a href='javascript:void(0)' onclick=\"fnGoAnalysis(\'#=ANAL_ID#\')\">#=ANAL_NAME#</a>",
+                },
+                {field : 'ANAL_ID', title:'분석ID', width:'60px', attributes: {style: "text-align: left;"}, hidden:true, model: { type: "string", editable: false, },},
+                {field : 'EXPERIMENTNUMBER', title:'연구노트번호', width:'60px', attributes: {style: "text-align: center;"}, model: { type: "string", editable: false, }, 
+                  template: "<a href='javascript:void(0)' onclick=\"fnGoExpNote(\'#=EXPERIMENTNUMBER#\')\">#=EXPERIMENTNUMBER#</a>",
+                },
+                {field : 'TITLE', title:'실험제목', width:'100px', attributes: {style: "text-align: left;"}, hidden:false, model: { type: "string", editable: false, },},
+                {field : 'BU_CODE', title:'BU_CODE', width:'60px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, }, },
+                {field : 'BU_NAME', title:'BU명', width:'60px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, }, },
+                {field : 'DEPTCODE', title:'DEPTCODE', width:'60px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, }, },
+                {field : 'DEPTNAME', title:'팀명', width:'60px', attributes: {style: "text-align: center;"}, hidden:false, model: { type: "string", editable: false, }, },
+                {field : 'USER_NAME', title:'사용자명', width:'50px', attributes: {style: "text-align: center;"}, hidden:false, model: { type: "string", editable: false, },
+                  template: "<a href='javascript:void(0)' onclick=\"fnGoUserDashBoard(\'#=USER_ID#\', \'#=USER_NAME#\', \'#=DEPTCODE#\')\">#=USER_NAME#</a>",
+                },
+                {field : 'CREATED', title:'생성일', width:'50px', attributes: {style: "text-align: center;"}, hidden:false, model: { type: "string", editable: false, },},
+                {field : 'DATE4CHART', title:'DATE4CHART', width:'50px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, },},
+                {field : 'USER_ID', title:'USER_ID', width:'50px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, },},
+            ],
+			_rowNumCol: false,   // row number column display 
+			_checkCol: false,       // check column display 
+	        editable: false, sortable: true, scrollable: true, mobile: true, resizable: true, reorderable: true, navigatable: true,
+            selectable: "multiple row",    //selectable: "multiple cell","multiple row","cell","row",
+            pageable:  false, 
+            serverPaging: true,  // --> datasource serverPaging 
+            page: function(e) {
+
+            }, 
+			change: function(e) {  // 그리드 셀 선택시 
+
+			},
+	        edit: function(e) {//Fired when the user edits or creates a data item
+
+            },
+            dataBound: function(e) { // moved in KendoUtils 
+                KendoUtils.dataBoundPost(e); 
+            },
+        });
+         // 30. 실험결과  
+        $("#gridExp").kendoGrid({
+            dataSource: _dsExp,
+            height: $(".container").height()-200,   
+            toolbar: [
+                {template: '<span id="exp_label" class="blacktext">▶ 템플릿 List</span>'}
+            ],
+            columns: [
+                {field : 'EXP_NAME', title:'실험명', width:'120px', attributes: {style: "text-align: left;"}, hidden:false, model: { type: "string", editable: false, },
+                  template: "<a href='javascript:void(0)' onclick=\"fnGoExpResult(\'#=EXP_ID#\')\">#=EXP_NAME#</a>",
+                },
+                {field : 'EXP_ID', title:'실험결과ID', width:'60px', attributes: {style: "text-align: left;"}, hidden:true, model: { type: "string", editable: false, },},
+                {field : 'EQUIP_ID', title:'장비ID', width:'100px', attributes: {style: "text-align: left;"}, hidden:false, model: { type: "string", editable: false, },},
+                {field : 'BU_CODE', title:'BU_CODE', width:'60px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, }, },
+                {field : 'BU_NAME', title:'BU명', width:'60px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, }, },
+                {field : 'DEPTCODE', title:'DEPTCODE', width:'60px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, }, },
+                {field : 'DEPTNAME', title:'팀명', width:'60px', attributes: {style: "text-align: center;"}, hidden:false, model: { type: "string", editable: false, }, },
+                {field : 'USER_NAME', title:'사용자명', width:'50px', attributes: {style: "text-align: center;"}, hidden:false, model: { type: "string", editable: false, },
+                  template: "<a href='javascript:void(0)' onclick=\"fnGoUserDashBoard(\'#=USER_ID#\', \'#=USER_NAME#\', \'#=DEPTCODE#\')\">#=USER_NAME#</a>",
+                },
+                {field : 'CREATED', title:'생성일', width:'50px', attributes: {style: "text-align: center;"}, hidden:false, model: { type: "string", editable: false, },},
+                {field : 'DATE4CHART', title:'DATE4CHART', width:'50px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, },},
+                {field : 'USER_ID', title:'USER_ID', width:'50px', attributes: {style: "text-align: center;"}, hidden:true, model: { type: "string", editable: false, },},
+            ],
+			_rowNumCol: false,   // row number column display 
+			_checkCol: false,       // check column display 
+	        editable: false, sortable: true, scrollable: true, mobile: true, resizable: true, reorderable: true, navigatable: true,
+            selectable: "multiple row",    //selectable: "multiple cell","multiple row","cell","row",
+            pageable:  false, 
+            serverPaging: true,  // --> datasource serverPaging 
+            page: function(e) {
+
+            }, 
+			change: function(e) {  // 그리드 셀 선택시 
+
+			},
+	        edit: function(e) {//Fired when the user edits or creates a data item
+
+            },
+            dataBound: function(e) { // moved in KendoUtils 
+                KendoUtils.dataBoundPost(e); 
+            },
+        });
+        // 2010. Grid  columns --> datasource schema fields  
+        _dsNote = KendoUtils.setGrid2DataSource("gridNote", "EXPERIMENTNUMBER", _dsNote);   
+        _dsTemplate = KendoUtils.setGrid2DataSource("gridTemplate", "ANAL_ID", _dsTemplate);  
+        _dsExp = KendoUtils.setGrid2DataSource("gridExp", "EXP_ID", _dsExp);  
+
+        // 3010. Kendo Grid 완성  
+        KendoUtils.gridComplete();
+    }
+    
+    /***********************************************************************
+    // event 처리 
+    ***********************************************************************/
+    $("#btnSearch").click(function() { // 조회 클릭 
+        TR.search("Q"); 
+    });
+
+    // Trans  
+    var TR = {
+        // search  
+        search : function(svid, pageindex){  
+            if(isnull(svid, "") == "") svid = "Q";
+ 
+            if(_dsNote != undefined){
+                _dsNote.filter({});  // 필터해제 
+                _dsTemplate.filter({});  // 필터해제 
+                _dsExp.filter({});  // 필터해제 
+            }
+ 
+            var params = {
+                url           : "/DashBoard/GetDashBoard4Admin",
+                data         : "formCond",    
+                resultBind : {result0: "gridNote", result1: "gridTemplate",result2: "gridExp"},  
+                pageindex : isnull(pageindex, 1),
+                funcVar     : this, 
+                svid          : svid, 
+            };
+
+            KendoAjaxTran.search(params); 
+        },
+
+        ShowNote : function(svid){
+            
+            TR.search("Q");
+            //fnResize();
+            //fnSplitterResize();
+        },
+        
+       
+
+        // tranaction post 
+        apply_post : function (svid, data){
+            if(svid == "Q"){  
+
+                // 팀 조회조건으로 월별챠트가 필터될때, 팀별챠트의 막대 색상을 맞추기 위해 담아둔다. 여기서 clear 
+                _noteChartData = [];  // clear 
+                _templateChartData = [];  // clear 
+                _expChartData = [];  // clear 
+
+                _search_data = data;  // 팀 조회조건(필터링) 에서 사용한다. 
+
+                var count = numberWithCommas(data.result0.length); 
+                fnSetLabel("note_label", count, false);
+
+                var count = numberWithCommas(data.result1.length); 
+                fnSetLabel("template_label", count, false);
+
+                 var count = numberWithCommas(data.result2.length); 
+                fnSetLabel("exp_label", count, false);
+
+                // chart 
+                createChart(svid, data, _baseUnit);
+                initial_data_binding = true;
+            }
+        },
+    }; 
+
+    // 연구노트 조회로 이동 
+    function fnGoExpNote(expNo){
+        var elnurl = '@ConfigUtil.getSectionValue("Las:Eln_Base_Url")';
+        window.open(elnurl+'/notebook/experiment/' + expNo);
+    }; 
+
+    // 템플릿분석 조회로 이동 fnGoExpResult
+    function fnGoAnalysis(analId){
+        window.open("/Analysis/ModAnalTmpl?ANAL_ID=" + analId + "&EXP_NO=@ViewBag.ExpNo");
+    }; 
+     // 템플릿분석 조회로 이동 fnGoExpResult
+    function fnGoExpResult(resultId){
+
+        window.open("/Analysis/ResultPCEQ?EXP_ID=" + resultId);
+    }; 
+
+    // 사용자별 대시보드로 이동 
+    function fnGoUserDashBoard(userId, userNm, teamCode){
+        //window.location.href = "/DashBoard/DashBoard4User?USER_ID=" + userId + "&USER_NAME=" + userNm + "&TEAM_CODE=" + teamCode + "&EXP_NO=@ViewBag.ExpNo";
+        var params = {USER_ID:userId, USER_NAME:userNm, TEAM_CODE:teamCode,  EXP_NO:'@ViewBag.ExpNo'}
+        Trans.postForm("/DashBoard/DashBoard4User", params, "post"); 
+    };  
+
+    // BU, TEAM combo 설정 
+    function fnSetBUTeamCombo(){
+        // x 버튼 제거 
+       // $("input[name='BU_CODE_input']").closest("span").find(".k-clear-value").hide();  
+
+        // BU 
+        var combobox = $("#BU_CODE_Q").data("kendoComboBox"); 
+        if(_dsCodeList["BU_CODE"].length == 1){ 
+            KendoUtils.set("BU_CODE_Q", _dsCodeList["BU_CODE"][0].VALUE);
+            combobox.readonly(true);  
+        }
+
+        KendoUtils.set("BU_CODE_Q", "@SESSION_USER_BU_CD");
+
+        // TEAM_CODE filtering 
+        fnSetFilterTeam();
+
+        // 롤, 포지션에 따른 설정 
+        var combobox = $("#TEAM_CODE_Q").data("kendoComboBox");
+        if("@SESSION_USER_ROLE" == "ADMIN"){
+            combobox.readonly(false);  
+        }else if("@SESSION_USER_POSITION_CD" == "@Position.DIRECTOR"){  // 직위==소장 
+            combobox.readonly(false);  
+        }else if("@SESSION_USER_POSITION_CD" == "@Position.TEAM_LEADER"){  // 직위==팀장 
+            KendoUtils.set("TEAM_CODE_Q", "@SESSION_USER_DEPT_CD");
+            combobox.readonly(true);  
+        }else{
+            KendoUtils.set("TEAM_CODE_Q", "@SESSION_USER_DEPT_CD");
+            combobox.readonly(true); 
+        }
+
+        trace("@SESSION_USER_DEPT_CD")
+    };
+    
+    // BU change 
+    function BU_CODE_Q_onChange(e){
+        fnSetFilterTeam();
+
+        if(_page_load){// 페이지 로딩 완료후 조회되도록. 콤보값 KendoUtils.set 할 경우 이벤트가 발생되어 미리 search를 호출함. 
+            TR.search("Q"); 
+            KendoUtils.set("TEAM_CODE_Q", "");  // set 호출시 이벤트 발생됨.  team event 에서 serarch 호출함. 
+        } 
+    };
+
+    // TEAM change 
+    function TEAM_CODE_Q_onChange(e){
+        //trace("_page_load : " + _page_load)
+        if(_page_load){// 페이지 로딩 완료후 조회되도록. 콤보값 KendoUtils.set 할 경우 이벤트가 발생되어 미리 search를 호출함. 
+            fnFilterData4Team();
+        } 
+    };
+ 
+    // Team combo 필터링 
+    function fnSetFilterTeam(svid){
+        var buCode = KendoUtils.get("BU_CODE_Q"); 
+
+        // Team Code filter 
+        var teamCombo = $("#TEAM_CODE_Q").data("kendoComboBox"); 
+        if(buCode == ""){
+            teamCombo.dataSource.filter({});  // 해제 
+        }else{
+            teamCombo.dataSource.filter({
+                    logic: "or",
+                    filters: [
+                        { field: "ATT1", operator: "eq", value: buCode }, 
+                        { field: "ATT1", operator: "eq", value: "" },   // All
+                    ]
+                }); 
+        }
+        teamCombo.dataSource.read(); 
+
+        trace("BU_CODE_Q_onChange : "  + teamCombo.dataSource._view.length + " / " + buCode)
+    };
+ 
+    // button click 
+    function fnPeriodClick(e){
+        fnSetButtonCss($(e).attr("id"));
+        var month = $(e).attr("_month");
+        $("#PERIOD").val(month);
+
+        if(month == 1){
+            _baseUnit = "weeks";
+        }else{
+            _baseUnit = "months";
+        }
+
+        TR.search();
+    };
+
+    // chart 
+    function createChart(svid, data, baseUnit) {
+        var noteData = data.result0;   // chart data
+        var format = (baseUnit == "weeks" ? "M.d" : "yy.M");
+        var teamAgg = []; 
+        var teamCode = []; 
+        var color = DashBoardChart.color;
+        var idx = 0; 
+        var deptNameQ = isnull(KendoUtils.getText4ddlDs(_dsCodeList["DASHBOARD_TEAM_CODE"], KendoUtils.get("#TEAM_CODE_Q"), "TEXT"), "") ; 
+
+        trace("deptNameQ : " + deptNameQ)
+
+        // 1010. 연구노트 챠트 
+        $(noteData).each(function (index, item) {
+            var date = new Date(item.DATE4CHART); 
+            item.DATE = date;
+            item.value = 1;
+ 
+            // chart 1 ==> [AA{}, BB{}, CC{}]
+            if (teamAgg["D" + item.DEPTCODE] == undefined) {
+                teamAgg["D" + item.DEPTCODE] = {CNT:1, DEPTCODE:item.DEPTCODE, DEPTNAME:item.DEPTNAME,}; 
+            }else{
+                teamAgg["D" + item.DEPTCODE].CNT = teamAgg["D" + item.DEPTCODE].CNT + 1; 
+            }
+
+            item["D" + item.DEPTCODE] = 1;  // for count 
+        });
+
+        var obj = Object.keys(teamAgg);
+        for (key in Object.keys(obj)) {  // [AA{}, BB{}, CC{}] --> [{}, {}, {}]
+            var field = obj[key];
+            var item = teamAgg[field];
+            teamCode.push(item);
+        }
+
+        // 오름차순 
+        teamCode.sort(function (a, b) {
+            return(a["DEPTNAME"] > b["DEPTNAME"]) ? 1 : ((a["DEPTNAME"] < b["DEPTNAME"]) ? -1 : 0);
+        });
+
+        // 10. note all chart 
+        if(svid == "Q"){
+            $.each(teamCode, function (key, item) {
+                item.valueColor = color[idx++];
+                _noteChartData.push(item);
+            }); 
+
+            DashBoardChart.createBarChart("noteChartAll", "팀별 연구노트 현황 [건수]", _noteChartData, false);
+        }
+
+        // 20. note monthly/weekly chart 
+        var series = []; 
+        var idx = 0; 
+        var color2 = ""; 
+        if(svid == "Q" || svid == "TQ"){
+            if(svid == "TQ" || deptNameQ > ""){
+                if(isnull(deptNameQ, "") != ""){
+                    var teamCode = teamCode.filter(function(v){
+                        return v.DEPTNAME===deptNameQ;
+                    });
+
+                    var noteData = noteData.filter(function(v){
+                        return v.DEPTNAME===deptNameQ;
+                    });
+                    
+                    var tmp = _noteChartData.filter(function(v){
+                        return v.DEPTNAME===deptNameQ;
+                    });
+                    color2 = (tmp.length > 0 ? tmp[0].valueColor : color[idx++]) ;
+                }
+            } 
+
+            $.each(teamCode, function (key, item) {
+                var json = {                 
+                    type: "column",
+                    name: item.DEPTNAME,
+                    aggregate: "sum",
+                    field: "D" + item.DEPTCODE,   // for count 
+                    categoryField: "DATE",
+                    color: (teamCode.length == 1 ? color2 : color[idx++]),
+                };
+                series.push(json); 
+            }); 
+
+            //var max = Math.max.apply(Math, teamCode.map(function(o) { return o.CNT; }))
+
+            // noteData
+            DashBoardChart.createBarChart4BaseUnit("noteChartMW", noteData, baseUnit, "팀별 월별(주별) 연구노트 현황 [건수]", series, format); 
+
+
+        }
+            
+ 
+        // 2010. 템플릿 챠트 
+        var templData = data.result1;   // chart data
+        var teamAgg = []; 
+        var teamCode = []; 
+        var idx = 0; 
+
+        // chart data  
+        $(templData).each(function (index, item) {
+            var date = new Date(item.DATE4CHART); 
+            item.DATE = date;
+            item.value = 1;
+
+            // chart 1 ==> [AA{}, BB{}, CC{}]
+            if (teamAgg["D" + item.DEPTCODE] == undefined) {
+                teamAgg["D" + item.DEPTCODE] = {CNT:1, DEPTCODE:item.DEPTCODE, DEPTNAME:item.DEPTNAME,}; 
+            }else{
+                teamAgg["D" + item.DEPTCODE].CNT = teamAgg["D" + item.DEPTCODE].CNT + 1; 
+            }
+
+            item["D" + item.DEPTCODE] = 1;  // for count 
+        });
+
+        var obj = Object.keys(teamAgg);
+        for (key in Object.keys(obj)) {  // [AA{}, BB{}, CC{}] --> [{}, {}, {}]
+            var field = obj[key];
+            var item = teamAgg[field];
+            teamCode.push(item);
+        }
+
+        // 오름차순 
+        teamCode.sort(function (a, b) {
+            return(a["DEPTNAME"] > b["DEPTNAME"]) ? 1 : ((a["DEPTNAME"] < b["DEPTNAME"]) ? -1 : 0);
+        });
+
+        // 30. template all chart 
+        if(svid == "Q"){
+            //var templateChartData = []; 
+            $.each(teamCode, function (key, item) {
+                item.valueColor = color[idx++];
+                _templateChartData.push(item);
+            }); 
+
+            DashBoardChart.createBarChart("templateChartAll", "팀별 템플릿 현황 [건수]", _templateChartData, false)
+        }
+ 
+        // 40. template monthly/weekly chart 
+        var series = []; 
+        var idx = 0; 
+        if(svid == "Q" || svid == "TQ"){
+            if(svid == "TQ" || deptNameQ > ""){
+                if(isnull(deptNameQ, "") != ""){
+                    var teamCode = teamCode.filter(function(v){
+                        return v.DEPTNAME===deptNameQ;
+                    });
+
+                    var templData = templData.filter(function(v){
+                        return v.DEPTNAME===deptNameQ;
+                    });      
+
+                    var tmp = _noteChartData.filter(function(v){
+                        return v.DEPTNAME===deptNameQ;
+                    });
+                    color2 = (tmp.length > 0 ? tmp[0].valueColor : color[idx++]) ;
+                }   
+            } 
+
+            $.each(teamCode, function (key, item) {
+                var json = {                 
+                    type: "column",
+                    name: item.DEPTNAME,
+                    aggregate: "sum",
+                    field: "D" + item.DEPTCODE,   // for count 
+                    categoryField: "DATE",
+                    color: (teamCode.length == 1 ? color2 : color[idx++]),
+                };
+                series.push(json); 
+            }); 
+
+            // templData 
+            DashBoardChart.createBarChart4BaseUnit("templateChartMW", templData, baseUnit, "팀별 월별(주별) 템플릿 현황 [건수]", series, format); 
+        }
+
+         // 3010. 실험결과 챠트 
+        var expResultData = data.result2;   // chart data
+        var teamAgg = []; 
+        var teamCode = []; 
+        var idx = 0; 
+
+        // chart data  
+        $(expResultData).each(function (index, item) {
+            var date = new Date(item.DATE4CHART); 
+            item.DATE = date;
+            item.value = 1;
+
+            // chart 1 ==> [AA{}, BB{}, CC{}]
+            if (teamAgg["D" + item.DEPTCODE] == undefined) {
+                teamAgg["D" + item.DEPTCODE] = {CNT:1, DEPTCODE:item.DEPTCODE, DEPTNAME:item.DEPTNAME,}; 
+            }else{
+                teamAgg["D" + item.DEPTCODE].CNT = teamAgg["D" + item.DEPTCODE].CNT + 1; 
+            }
+
+            item["D" + item.DEPTCODE] = 1;  // for count 
+        });
+
+        var obj = Object.keys(teamAgg);
+        for (key in Object.keys(obj)) {  // [AA{}, BB{}, CC{}] --> [{}, {}, {}]
+            var field = obj[key];
+            var item = teamAgg[field];
+            teamCode.push(item);
+        }
+
+        // 오름차순 
+        teamCode.sort(function (a, b) {
+            return(a["DEPTNAME"] > b["DEPTNAME"]) ? 1 : ((a["DEPTNAME"] < b["DEPTNAME"]) ? -1 : 0);
+        });
+
+        // 30. expResult all chart 
+        if(svid == "Q"){
+            //var templateChartData = []; 
+            $.each(teamCode, function (key, item) {
+                item.valueColor = color[idx++];
+                _expChartData.push(item);
+            }); 
+
+            DashBoardChart.createBarChart("expChartAll", "팀별 실험결과 현황 [건수]", _expChartData, false)
+        }
+ 
+        // 40. expResult monthly/weekly chart 
+        var series = []; 
+        var idx = 0; 
+        if(svid == "Q" || svid == "TQ"){
+            if(svid == "TQ" || deptNameQ > ""){
+                if(isnull(deptNameQ, "") != ""){
+                    var teamCode = teamCode.filter(function(v){
+                        return v.DEPTNAME===deptNameQ;
+                    });
+
+                    var expResultData = expResultData.filter(function(v){
+                        return v.DEPTNAME===deptNameQ;
+                    });      
+
+                    var tmp = _noteChartData.filter(function(v){
+                        return v.DEPTNAME===deptNameQ;
+                    });
+                    color2 = (tmp.length > 0 ? tmp[0].valueColor : color[idx++]) ;
+                }   
+            } 
+
+            $.each(teamCode, function (key, item) {
+                var json = {                 
+                    type: "column",
+                    name: item.DEPTNAME,
+                    aggregate: "sum",
+                    field: "D" + item.DEPTCODE,   // for count 
+                    categoryField: "DATE",
+                    color: (teamCode.length == 1 ? color2 : color[idx++]),
+                };
+                series.push(json); 
+            }); 
+
+            // expResultData 
+            DashBoardChart.createBarChart4BaseUnit("expChartMW", expResultData, baseUnit, "팀별 월별(주별) 실험결과 현황 [건수]", series, format); 
+        }
+    };
+     
+    // chart series click event 1
+    function noteChartAll_seriesClick(e){
+        trace(e.category + " / " + e.value + "/"+ e.series.name);
+
+        if(isnull(e.category, "") > ""){
+            _dsNote.filter(
+                {
+                    logic: "and",
+                    filters: [
+                        { field: "DEPTNAME", operator: "eq", value: e.category},
+                    ]
+                }
+            ); 
+        }else{
+            _dsNote.filter({}); 
+        }
+
+        var count = numberWithCommas(_dsNote._view.length); 
+        fnSetLabel("note_label", count, true);
+    };
+
+    // chart series click event 2
+    function noteChartMW_seriesClick(e){
+        var date = new Date();
+        var dateStr = new Date(e.category.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0,10);
+        var dateStr2 = dateStr;
+        var baseUnit = _baseUnit;
+
+        trace(e.category + " / " + e.value + "/"+ e.series.name);
+
+        if(baseUnit == "months"){
+            dateStr = dateStr.slice(0, 7);
+        }else if(baseUnit == "weeks") {
+            dateStr2 = new Date(addDays(dateStr, 6).getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0,10);  
+        }
+
+        if(isnull(e.series.name, "") > "" && baseUnit == "months"){  
+            var depart = e.series.name;
+            _dsNote.filter(
+                {
+                    logic: "and",
+                    filters: [
+                        { field: "DEPTNAME", operator: "eq", value: depart},
+                        { field: "DATE4CHART", operator: "startswith", value: dateStr},
+                    ]
+                }
+            ); 
+        }else if(isnull(e.series.name, "") > "" && baseUnit == "weeks"){  
+            var depart = e.series.name;
+            _dsNote.filter(
+                {
+                    logic: "and",
+                    filters: [
+                        { field: "DEPTNAME", operator: "eq", value: depart},
+                        { field: "DATE4CHART", operator: "gte", value: dateStr},
+                        { field: "DATE4CHART", operator: "lte", value: dateStr2},
+                    ]
+                }
+            ); 
+        }else{
+            _dsNote.filter({}); 
+        }
+
+        var count = numberWithCommas(_dsNote._view.length); 
+        fnSetLabel("note_label", count, true);
+    };
+
+    // chart series click event 3
+    function templateChartAll_seriesClick(e){
+        trace(e.category + " / " + e.value + "/"+ e.series.name);
+
+        if(isnull(e.category, "") > ""){
+            _dsTemplate.filter(
+                {
+                    logic: "and",
+                    filters: [
+                        { field: "DEPTNAME", operator: "eq", value: e.category},
+                    ]
+                }
+            ); 
+        }else{
+            _dsTemplate.filter({}); 
+        }
+
+        var count = numberWithCommas(_dsTemplate._view.length); 
+        fnSetLabel("template_label", count, true);
+    };
+    
+    // chart series click event 4 
+    function templateChartMW_seriesClick(e){
+        var date = new Date();
+        var dateStr = new Date(e.category.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0,10);
+        var dateStr2 = dateStr;
+        var baseUnit = _baseUnit;
+
+        if(baseUnit == "months"){
+            dateStr = dateStr.slice(0, 7);
+        }else if(baseUnit == "weeks") {
+            dateStr2 = new Date(addDays(dateStr, 6).getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0,10);  
+        }
+ 
+        if(isnull(e.series.name, "") > "" && baseUnit == "months"){  
+            var depart = e.series.name;
+            _dsTemplate.filter(
+                {
+                    logic: "and",
+                    filters: [
+                        { field: "DEPTNAME", operator: "eq", value: depart},
+                        { field: "DATE4CHART", operator: "startswith", value: dateStr},
+                    ]
+                }
+            ); 
+        }else if(isnull(e.series.name, "") > "" && baseUnit == "weeks"){  
+            var depart = e.series.name;
+            _dsTemplate.filter(
+                {
+                    logic: "and",
+                    filters: [
+                        { field: "DEPTNAME", operator: "eq", value: depart},
+                        { field: "DATE4CHART", operator: "gte", value: dateStr},
+                        { field: "DATE4CHART", operator: "lte", value: dateStr2},
+                    ]
+                }
+            ); 
+        }else{
+            _dsTemplate.filter({}); 
+        }
+
+        var count = numberWithCommas(_dsTemplate._view.length); 
+        fnSetLabel("template_label", count, true);
+    };
+
+     // chart series click event 3
+    function expChartAll_seriesClick(e){
+        trace(e.category + " / " + e.value + "/"+ e.series.name);
+
+        if(isnull(e.category, "") > ""){
+            _dsExp.filter(
+                {
+                    logic: "and",
+                    filters: [
+                        { field: "DEPTNAME", operator: "eq", value: e.category},
+                    ]
+                }
+            ); 
+        }else{
+            _dsExp.filter({}); 
+        }
+
+        var count = numberWithCommas(_dsExp._view.length); 
+        fnSetLabel("exp_label", count, true);
+    };
+    
+    // chart series click event 4 
+    function expChartMW_seriesClick(e){
+        var date = new Date();
+        var dateStr = new Date(e.category.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0,10);
+        var dateStr2 = dateStr;
+        var baseUnit = _baseUnit;
+
+        if(baseUnit == "months"){
+            dateStr = dateStr.slice(0, 7);
+        }else if(baseUnit == "weeks") {
+            dateStr2 = new Date(addDays(dateStr, 6).getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0,10);  
+        }
+ 
+        if(isnull(e.series.name, "") > "" && baseUnit == "months"){  
+            var depart = e.series.name;
+            _dsExp.filter(
+                {
+                    logic: "and",
+                    filters: [
+                        { field: "DEPTNAME", operator: "eq", value: depart},
+                        { field: "DATE4CHART", operator: "startswith", value: dateStr},
+                    ]
+                }
+            ); 
+        }else if(isnull(e.series.name, "") > "" && baseUnit == "weeks"){  
+            var depart = e.series.name;
+            _dsExp.filter(
+                {
+                    logic: "and",
+                    filters: [
+                        { field: "DEPTNAME", operator: "eq", value: depart},
+                        { field: "DATE4CHART", operator: "gte", value: dateStr},
+                        { field: "DATE4CHART", operator: "lte", value: dateStr2},
+                    ]
+                }
+            ); 
+        }else{
+            _dsExp.filter({}); 
+        }
+
+        var count = numberWithCommas(_dsExp._view.length); 
+        fnSetLabel("exp_label", count, true);
+    };
+
+// Team 조회조건에 따른 필터링 
+    function fnFilterData4Team(){
+        // chart 
+        createChart("TQ", _search_data, _baseUnit);
+ 
+        var deptNameQ = isnull(KendoUtils.getText4ddlDs(_dsCodeList["DASHBOARD_TEAM_CODE"], KendoUtils.get("#TEAM_CODE_Q"), "TEXT"), "") ; 
+        trace("deptName:"  +deptNameQ)
+
+        if(deptNameQ == ""){ 
+            _dsNote.filter({});  // 해제 
+            var count = numberWithCommas(_dsNote._view.length); 
+            fnSetLabel("note_label", count, false);
+
+            _dsTemplate.filter({}); // 해제 
+            var count = numberWithCommas(_dsTemplate._view.length); 
+            fnSetLabel("template_label", count, false);
+
+            _dsExp.filter({}); // 해제 
+            var count = numberWithCommas(_dsExp._view.length); 
+            fnSetLabel("exp_label", count, false);
+
+        }else{ 
+            _dsNote.filter(
+                {
+                    logic: "and",
+                    filters: [
+                        { field: "DEPTNAME", operator: "eq", value: deptNameQ},
+                    ]
+                }
+            ); 
+
+            var count = numberWithCommas(_dsNote._view.length); 
+            fnSetLabel("note_label", count, true);
+
+            _dsTemplate.filter(
+                {
+                    logic: "and",
+                    filters: [
+                        { field: "DEPTNAME", operator: "eq", value: deptNameQ},
+                    ]
+                }
+            ); 
+
+            var count = numberWithCommas(_dsTemplate._view.length); 
+            fnSetLabel("template_label", count, true);
+
+             _dsExp.filter(
+                {
+                    logic: "and",
+                    filters: [
+                        { field: "DEPTNAME", operator: "eq", value: deptNameQ},
+                    ]
+                }
+            ); 
+
+            var count = numberWithCommas(_dsExp._view.length); 
+            fnSetLabel("exp_label", count, true);
+        }
+    };
+ 
+    // chart toolbar lable 
+    function fnSetLabel(id, count, isfilter){
+        if(isfilter){
+            $("#" + id).addClass("bluetext");
+            $("#" + id).removeClass("blacktext");
+        }else{
+            $("#" + id).addClass("blacktext");
+            $("#" + id).removeClass("bluetext");
+        }
+
+        if(id == "note_label") $("#note_label").text('▶ 연구노트 List ( ' + count + ' 건 )'); 
+        if(id == "template_label") $("#template_label").text('▶ 템플릿 List ( ' + count + ' 건 )'); 
+        if(id == "exp_label") $("#exp_label").text('▶ 실험결과 List ( ' + count + ' 건 )'); 
+    };
+    
+    // button class 
+    function fnSetButtonCss(activeBtnId){
+        // KendoUtils.js 에서 kendo button 생성시 class를 재조정하므로 ... 공통 처리후 다시 설정 
+        $("#period button").each(function (index, item) {
+            $(item).removeClass("k-button-solid-primary"); 
+            $(item).addClass("dashboard-button-off");
+        });
+
+        // 활성화 버튼설정
+        $("#" + activeBtnId).addClass("k-button-solid-primary"); 
+        $("#" + activeBtnId).removeClass("dashboard-button-off");
+    };
+
+    /*************************************************************************/
+	// layout resizing..
+	/************************************************************************/
+      $(window).resize(function(){
+           //TR.search("Q");
+           fnResize();
+      });
+
+      function fnResize(){
+          // 우측 Gird Resize
+          // 연구노트
+          $("#gridNote").height($(".container").height()-$("#period").height()-160);
+          var dataArea = $("#gridNote").find(".k-grid-content");
+          $(dataArea).height($("#gridNote").height()-90);
+
+          // 템플릿
+          $("#gridTemplate").height($(".container").height()-$("#period").height()-160);
+          var dataArea = $("#gridTemplate").find(".k-grid-content");
+          $(dataArea).height($("#gridTemplate").height()-90);
+
+          // 실험결과확인
+          $("#gridExp").height($(".container").height()-$("#period").height()-160);
+          var dataArea = $("#gridExp").find(".k-grid-content");
+          $(dataArea).height($("#gridExp").height()-90);
+
+          // 좌측 Chart Resize
+          if(initial_data_binding){
+              _noteChartData = [];  // clear 
+              _templateChartData = [];  // clear 
+              _expChartData = [];  // clear 
+
+              createChart("Q", _search_data, _baseUnit);
+          };          
+          
+          
+      };
+
+	
+
+</script>

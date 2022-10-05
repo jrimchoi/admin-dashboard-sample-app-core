@@ -1,0 +1,190 @@
+﻿@using DSELN.Cmm.Utils
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc
+@using DSELN.Models.Login
+@using DSELN.Cmm.Helper
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "DSELN ";
+    string SESSION_USER_ID =  HttpContextAccessor.HttpContext.Session.GetString(Const.SESSION_USER_ID) as string ?? string.Empty;
+    string SESSION_USER_NM = ""; 
+    string SESSION_SYS_ID = ""; 
+    string SESSION_LOGIN_DATE =  "";
+    string SESSION_USE_DEPT =  "";
+
+    if(!SESSION_USER_ID.Equals(string.Empty))
+    {
+        var sessionInfo = SessionHelper.GetSessionModel(HttpContextAccessor.HttpContext.Session);
+        if(sessionInfo != null && sessionInfo.USER_NM != null)
+        {
+            SESSION_USER_ID = sessionInfo.USER_ID;    
+            SESSION_USER_NM = sessionInfo.USER_NM; 
+            SESSION_SYS_ID = sessionInfo.SYS_ID; 
+            SESSION_LOGIN_DATE = sessionInfo.LOGIN_DT; 
+            SESSION_USE_DEPT = sessionInfo.USE_DEPT; 
+            ViewBag._USER_MENU = SessionHelper.GetSessionUserMenu(HttpContextAccessor.HttpContext.Session);  // 세션에 저장된 사용자별 메뉴 
+        }
+    }
+
+    var parms = new Dictionary<string, string>{ { "EXP_NO", ViewBag.ExpNo }, };
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <!--<title>@ViewData["Title"] - DSELN Ver 0.9</title>-->
+    <title>|| 대상(주) 전자연구노트 ||</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css?ver=20220506" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DSELN.styles.css?ver=20220506" asp-append-version="true" />
+
+@*    <link rel="stylesheet" href="~/kendoui/src/styles/web/kendo.common.css" />
+    <link rel="stylesheet" href="~/kendoui/src/styles/web/kendo.default.css" />*@
+
+    <link rel="stylesheet" href="~/kendoui/src/styles/web/daesang.css?ver=202200826" />
+
+    <link rel="stylesheet" href="~/css/common/loading.css?ver=20220506" />
+    <link rel="stylesheet" href="~/css/common/common.css?ver=202200826" />
+ 	<link rel="stylesheet" href="~/css/common/dmt.common.css?ver=202200826" />
+    <link rel="stylesheet" href="~/css/common/navbar.css?ver=20220704" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+
+    
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/kendoui/src/js/jquery.js"></script>
+    <script src="~/js/common/jszip.min.js"></script>
+    <script src="~/kendoui/src/js/kendo.all.js?ver=20220506"></script>
+    <script src="~/kendoui/src/js/cultures/kendo.culture.ko-KR.js"></script>
+
+    <script src="~/js/common/kendoUtils.js?ver=202200826"></script>   <!-- 공통 스크립트  -->
+    <script src="~/js/common/kendoTrans.js?ver=202200826"></script>
+    <script src="~/js/common/DSELN.js?ver=202200826"></script>
+
+    <script src="~/js/pp-responsive.js"></script>
+
+    <script src="~/lib/font-awesome/js/all.js"></script>
+
+	<script type="text/javascript">
+        kendo.culture("ko-KR");
+        var SESSION_LOGIN_DATE = '@SESSION_LOGIN_DATE';  // js 파일에서 사용하기 위해 ... js 에서는 razor 안되는듯...
+        var SESSION_USE_DEPT = '@SESSION_USE_DEPT'; 
+        var _ROUTE_DATA = '@Html.Raw(Json.Serialize(parms))'; 
+    </script>
+</head>
+<body>
+    <header>
+        <form name="mainForm">
+            <div id="logodiv">
+              <div id="left">
+                <img
+                  src="/images/common/daesang-logo.png"
+                  alt="logo"
+                />
+
+                <div id="bar"></div>
+
+                <div id="title"></div>
+              </div>
+
+              <div id="right">
+                <span id="user">@SESSION_USER_NM</span>
+
+                <span id="home" onclick="window.location.replace(`@ConfigUtil.getSectionValue("Las:Base_Url")`)">
+                  <i class="fa-solid fa-house-chimney fa-2xl"></i>
+                </span>
+
+                <span id="logout" onclick="fn_logout();">
+                  <i class="fa-solid fa-arrow-right-from-bracket fa-2xl"></i>
+                </span>
+              </div>
+            </div>
+
+            <div id="menudiv">
+	            <table border="0" cellspacing="0" cellpadding="0" width="100%" class="toolbar-row">
+		            <tr>
+			            <td class="toolbar-container" width="100%">
+				            <div id="divToolbar">
+                                <div class="demo-section k-content">
+                                    <ul id="globalMenu">
+                                         
+                                    </ul>
+                                </div>
+                            </div>
+
+				            <input type="hidden" id="auth" value="" />
+	                    </td>
+                    </tr>
+                </table>
+            </div>	
+           
+            <div id="modalWindow" style="display:none"></div>
+
+            <!-- loader  --> 
+            <div class="flex justify-center dimmed2" id="div_load_image" style="display:none;" > 
+			    <!-- waiting gif -->
+	            <div id="div_load_image2" class="wait4running" > 
+	        	    <img src="/images/common/loading.gif" style="width:100px; height:100px;"> 
+	            </div>
+            </div>
+
+        </form>
+ 
+    </header>
+        <div class="container fill">
+
+            <main role="main" class="pb-3" style="width:100%;height:100%;">
+                @RenderBody()   
+            </main>
+ 
+        </div>
+ 
+@*        <div class="container" style="width:100%;height:100%;">
+            <main role="main" class="pb-3">
+                @RenderBody()   
+            </main>
+        </div>*@
+
+        <script>
+            // document ready 
+		    $(document).ready(function() {
+                var menuJsonStr = '@Html.Raw(Json.Serialize(ViewBag._USER_MENU))';  // session user menu 
+                UserMenu.getMenu("globalMenu", menuJsonStr); // 사용자별 메뉴 설정
+                if (window !== window.parent) {
+                    $('#logodiv').hide();
+                    $('#menudiv').hide();
+                }
+		    });
+ 
+            // logout 
+            function fn_logout(){ // testing....
+		        //trace("로그아웃....... ");
+		        if (!confirm("지금 로그아웃 하시겠습니까?")) {
+		            // 취소(아니오)  
+		        } else {
+		            window.location.href = "/login/logout"; 
+		        }
+		    }
+
+        </script>
+@*
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - WebApplication1 - <a asp-area="" asp-controller="Home" asp-action="Privacy"> Privacy</a>
+        </div>
+    </footer>*@
+
+@*    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>*@
+
+ 
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

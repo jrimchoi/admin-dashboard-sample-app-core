@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Changelog for Kendo UI Professional v2022.1.412 (Tue Apr 12 2022)</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font: .75em/1.5 Tahoma, sans-serif;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            font-size: normal;
+        }
+
+        h2 {
+            font-size: 2em;
+            font-weight: normal;
+            margin: 1.2em 0 .3em;
+            padding-bottom: .2em;
+        }
+
+        .breaking {
+            background-color: #e10c01;
+            color: #fff;
+            border-radius: 3px;
+            padding: 3px 4px;
+            display: inline-block;
+            font-size: 11px;
+            line-height: 1;
+            font-weight: bold;
+        }
+
+        #page {
+            width: 50em;
+            margin: 0 auto 2em;
+            border-radius: 0 0 1em 1em;
+            box-shadow: 0 0 10px #ccc;
+            padding: 1em 2em 2em;
+        }
+
+        .poBoxIcon {
+            float: left;
+            font-size: 2em;
+            margin: 1.2em .5em 0 0;
+        }
+
+        .poTopLine {
+            border-top: 2px solid #e1e1e1;
+            margin: 17px 0 40px 0;
+        }
+    </style>
+    <base href="https://www.telerik.com/support/whats-new/kendo-ui-web/release-history">
+</head>
+
+<body>
+    <div id="page">
+        <h1 class="title">Release notes</h1>
+        <div class="tClear poTopLine"></div>
+        <h1>Common</h1>
+        <div class="tClear poTopLine">
+            <div class="poBoxIconText">
+                <p><strong>What's new</strong></p>
+                <ul>
+                    <li>Bootstrap Theme Package <a href="https://github.com/telerik/kendo-themes/blob/master/packages/bootstrap/CHANGELOG.md#530-2022-04-04"> (v5.3.0) </a></li>
+                    <li>Classic Theme Package <a href="https://github.com/telerik/kendo-themes/blob/master/packages/classic/CHANGELOG.md#530-2022-04-04"> (v5.3.0) </a> </li>
+                    <li>Material Theme Package <a href="https://github.com/telerik/kendo-themes/blob/master/packages/material/CHANGELOG.md#530-2022-04-04"> (v5.3.0) </a></li>
+                    <li>Default Theme Package <a href="https://github.com/telerik/kendo-themes/blob/master/packages/default/CHANGELOG.md#530-2022-04-04"> (v5.3.0) </a></li>
+                    <li>Handle jQuery deprecated symbols refering to proxy() and $.isArray <a href="https://github.com/telerik/kendo-ui-core/issues/6634">(#6634)</a></li>
+                </ul>
+                <p><strong>What's fixed</strong></p>
+                <ul>
+                    <li>Remove invalid CSS properties from Less themes <a href="https://github.com/telerik/kendo-ui-core/issues/6175">(#6175)</a></li>
+                </ul>
+            </div>
+        </div>
+        <h1>Features and Updates</h1>
+        <div class="tClear poTopLine">
+            <h2>AutoComplete</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>aria-activedescendant should not be present on drop-down widgets when their Popup is not visible</li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>ComboBox</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>aria-activedescendant should not be present on drop-down widgets when their Popup is not visible</li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>DatePicker</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>aria-activedescendant should not be present on drop-down widgets when their Popup is not visible</li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>DateTimePicker</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>aria-activedescendant should not be present on drop-down widgets when their Popup is not visible</li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>DropDownList</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>aria-activedescendant should not be present on drop-down widgets when their Popup is not visible</li>
+                <li>When NVDA is on, for selection does not go beyond the optionLabel, when it is displayed as selected <a href="https://github.com/telerik/kendo-ui-core/issues/6706">(#6706)</a></li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Editor</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>Editor Table Wizard keyboard navigation improvements <a href="https://github.com/telerik/kendo-ui-core/issues/6655">(#6655)</a></li>
+                <li>Unable to navigate between colors in Editor Font and Background ColorPickers with keyboard <a href="https://github.com/telerik/kendo-ui-core/issues/6654">(#6654)</a></li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>FloatingActionButton</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>FloatingActionButtonm show() method does not cause the button to appear <a href="https://github.com/telerik/kendo-ui-core/issues/6273">(#6273)</a></li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Form</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>Setting value to null for the Switch removes the text for the Off label.</li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Grid</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>Wrong filter button height in Fiori theme</li>
+                <li>Clicking on the Switch in editable cell closes the edit mode when keyboard navigation is enabled <a href="https://github.com/telerik/kendo-ui-core/issues/6766">(#6766)</a></li>
+                <li>kendoNumericTextBox is not initialized properly in the Grid Filter menu customization <a href="https://github.com/telerik/kendo-ui-core/issues/6760">(#6760)</a></li>
+                <li>Aggregate disappears in Grid with Endless scrolling and Locked columns when a group and a filter is applied to the same column <a href="https://github.com/telerik/kendo-ui-core/issues/6691">(#6691)</a></li>
+                <li>Grid copy selection has incorrect offset for the header row <a href="https://github.com/telerik/kendo-ui-core/issues/6662">(#6662)</a></li>
+                <li>SkeletonContainer not shown for last column in a hierarchy <a href="https://github.com/telerik/kendo-ui-core/issues/6553">(#6553)</a></li>
+                <li>Rows misaligned when using Grid with GroupPaging and Locked columns <a href="https://github.com/telerik/kendo-ui-core/issues/6513">(#6513)</a></li>
+                <li>Add aria-haspopup to Grid's headers, only when popup functionalities are enabled. <a href="https://github.com/telerik/kendo-ui-core/issues/6511">(#6511)</a></li>
+                <li>Grid does not remove the group headers of the empty row when "Add new record" is canceled <a href="https://github.com/telerik/kendo-ui-core/issues/6507">(#6507)</a></li>
+                <li>Grid with local data and virtualization does not show correct items when sorted <a href="https://github.com/telerik/kendo-ui-core/issues/6482">(#6482)</a></li>
+                <li>Grid's selectedKeyNames() method returns IDs from all pages when persistSelection: false <a href="https://github.com/telerik/kendo-ui-core/issues/6318">(#6318)</a></li>
+                <li>Selected sticky columns are missing some styling in multiple cell selection <a href="https://github.com/telerik/kendo-ui-core/issues/6294">(#6294)</a></li>
+                <li>Change event is triggered when select method is called and row automatically selected due to persistSelection <a href="https://github.com/telerik/kendo-ui-core/issues/5631">(#5631)</a></li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Menu</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>Wrong orientation class name when Menu is scrollable</li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>MultiColumnComboBox</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>aria-activedescendant should not be present on drop-down widgets when their Popup is not visible</li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>MultiSelect</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>aria-activedescendant should not be present on drop-down widgets when their Popup is not visible</li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>NumericTextBox</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>NumericTextBox throws an error when an invalid value is pasted</li>
+                <li>kendoNumericTextBox is not initialized properly in the Grid Filter menu customization <a href="https://github.com/telerik/kendo-ui-core/issues/6760">(#6760)</a></li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Scheduler</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>Unexpected focus on Scheduler's first toolbar button while a dialog is open</li>
+                <li>Not updated focus indicator on clicking Scheduler view's text</li>
+                <li>Navigating to Month view scrolls page to top using LESS themes <a href="https://github.com/telerik/kendo-ui-core/issues/6769">(#6769)</a></li>
+                <li>Scheduler events are not properly positioned in mobile RTL scenarios when a scrollbar is displayed and grouping is enabled <a href="https://github.com/telerik/kendo-ui-core/issues/6670">(#6670)</a></li>
+                <li>Navigation to all day event is impossible when tabbing from event that spans to the next day <a href="https://github.com/telerik/kendo-ui-core/issues/4417">(#4417)</a></li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Spreadsheet</h2>
+            <p><strong>What's new</strong></p>
+            <ul>
+                <li>Spreadsheet's sheet resizing functionality and resize method</li>
+            </ul>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>Spreadsheet tools popup do not show options vertically and their text is cut</li>
+                <li>JavaScript error thrown on pasting data to a Spreadsheet's sheet with one column <a href="https://github.com/telerik/kendo-ui-core/issues/6783">(#6783)</a></li>
+                <li>Value is not displayed after merging formula cells in Spreadsheet <a href="https://github.com/telerik/kendo-ui-core/issues/6729">(#6729)</a></li>
+                <li>Improper rounding with ROUND function <a href="https://github.com/telerik/kendo-ui-core/issues/6686">(#6686)</a></li>
+                <li>Wrong calculation in DAYS formula in Spreadsheet <a href="https://github.com/telerik/kendo-ui-core/issues/6672">(#6672)</a></li>
+                <li>Filter box doesn't appear in Spreadsheet when browsed under Surface <a href="https://github.com/telerik/kendo-ui-core/issues/6623">(#6623)</a></li>
+                <li>The comment for a merged cell in Spreadsheet appears only when you hover the first cell from the group. <a href="https://github.com/telerik/kendo-ui-core/issues/6615">(#6615)</a></li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Switch</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>Setting value to null for the Switch removes the text for the Off label.</li>
+                <li>Clicking on the Switch in editable cell closes the edit mode when keyboard navigation is enabled <a href="https://github.com/telerik/kendo-ui-core/issues/6766">(#6766)</a></li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>TimePicker</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>aria-activedescendant should not be present on drop-down widgets when their Popup is not visible</li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>ToolBar</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>ToolBar items of type ButtonGroup and template items cannot be hidden through the hidden property <a href="https://github.com/telerik/kendo-ui-core/issues/2289">(#2289)</a></li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>TreeList</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>Popup for adding new row does not appear when a filter is applied. <a href="https://github.com/telerik/kendo-ui-core/issues/6751">(#6751)</a></li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>TreeView</h2>
+            <p><strong>What's new</strong></p>
+            <ul>
+                <li>TreeView loadCompleted event</li>
+            </ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Window</h2>
+            <p><strong>What's fixed</strong></p>
+            <ul>
+                <li>Minimize and maximize with keyboard does not always work</li>
+                <li>Resizable Dialog: NVDA reads "clickable" too many times. <a href="https://github.com/telerik/kendo-ui-core/issues/6472">(#6472)</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

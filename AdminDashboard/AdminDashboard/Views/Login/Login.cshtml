@@ -1,0 +1,59 @@
+﻿@{ // Layout을 null로 지정해서 표시를 방지 
+        Layout = null; 
+        ViewData["Title"] = "Login"; 
+   }
+
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="mobile-web-app-capable" content="yes">
+		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	    <link rel="stylesheet" href="~/css/common/common.css">
+	    <link rel="stylesheet" href="~/css/common/login.css">
+ 
+	    <title>@ViewData["loginErrorMsg"]</title>
+
+		<script>
+			if("@ViewBag.error" != "")
+			{
+				alert("@ViewBag.error");
+			}
+		</script>
+    </head>
+
+    <body>
+
+		<div class="text-center">
+			<div class="jumbotron">
+			<h1 class="display-4">@ViewBag.error</h1> 
+			</div>
+		</div>
+
+		<form name="from_login" class="form-signin"  method="post" asp-controller="Login" asp-action="login">
+			<div class="wrap">
+				<article>
+					<section>
+						<h2>member_login</h2>
+						<div class="login_body" >
+								<fieldset>
+									<legend>로그인 입력</legend>
+
+									<input name="USER_ID" type="text" class="j_username"/>
+
+									<input name="PWD" type="password" class="j_password"/>
+							
+									<div>
+										<button type="submit" value="Login">LOGIN</button>
+									</div>
+								</fieldset>
+							</div>
+					</section>
+				</article>
+			</div>
+		</form>
+
+    </body>
+</html>

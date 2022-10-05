@@ -1,0 +1,62 @@
+﻿@using DSELN.Cmm.Utils
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc
+@using DSELN.Models.Login
+@using DSELN.Cmm.Helper
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "DSELN ";
+    string SESSION_USER_ID =  HttpContextAccessor.HttpContext.Session.GetString(Const.SESSION_USER_ID) as string ?? string.Empty;
+    string SESSION_USER_NM = ""; 
+    string SESSION_SYS_ID = ""; 
+    string SESSION_LOGIN_DATE =  "";
+    string SESSION_USE_DEPT =  "";
+
+    if (!SESSION_USER_ID.Equals(string.Empty))
+    {
+        var sessionInfo = SessionHelper.GetSessionModel(HttpContextAccessor.HttpContext.Session);
+        if (sessionInfo != null && sessionInfo.USER_NM != null)
+        {
+            SESSION_USER_ID = sessionInfo.USER_ID;
+            SESSION_USER_NM = sessionInfo.USER_NM;
+            SESSION_SYS_ID = sessionInfo.SYS_ID;
+            SESSION_LOGIN_DATE = sessionInfo.LOGIN_DT;
+            SESSION_USE_DEPT = sessionInfo.USE_DEPT;
+        }
+    }
+}
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css?ver=20220506" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DSELN.styles.css?ver=20220506" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/kendoui/src/styles/web/kendo.common.css" />
+    <link rel="stylesheet" href="~/kendoui/src/styles/web/kendo.default.css" />
+
+    <link rel="stylesheet" href="~/css/common/loading.css?ver=20220506" />
+    <link rel="stylesheet" href="~/css/common/common.css?ver=20220506" />
+ 	<link rel="stylesheet" href="~/css/common/dmt.common.css?ver=20220506" />
+    <link rel="stylesheet" href="~/css/common/navbar.css?ver=20220704" />
+    <link rel="stylesheet" href="~/lib/font-awesome//css/all.css" />
+
+    
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/kendoui/src/js/jquery.js"></script>
+    <script src="~/js/common/jszip.min.js"></script>
+    <script src="~/kendoui/src/js/kendo.all.js?ver=20220506"></script>
+    <script src="~/kendoui/src/js/cultures/kendo.culture.ko-KR.js"></script>
+
+    <script src="~/js/common/kendoUtils.js?ver=202200502"></script>   <!-- 공통 스크립트  -->
+    <script src="~/js/common/kendoTrans.js?ver=202200502"></script>
+    <script src="~/js/common/DSELN.js?ver=202200502"></script>
+
+    <script src="~/js/pp-responsive.js"></script>
+
+    <script src="~/lib/font-awesome/js/all.js"></script>
+
+    <script type="text/javascript">
+        var SESSION_LOGIN_DATE = '@SESSION_LOGIN_DATE';  // js 파일에서 사용하기 위해 ... js 에서는 razor 안되는듯...
+        var SESSION_USE_DEPT = '@SESSION_USE_DEPT'; 
+    </script> 

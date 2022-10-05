@@ -1,0 +1,49 @@
+﻿@charset "utf-8";
+
+
+#logodiv {
+    background-color: #00B6D6;
+    display: flex;
+    justify-content: space-between;
+    height: 60px;
+    color: white;
+}
+
+#left {
+    display: flex;
+}
+
+img {
+    object-fit: contain;
+}
+
+#bar {
+    border-right: 1px solid white;
+    margin: 15px 0 15px 0;
+}
+
+#title {
+    align-self: center;
+    font-weight: bold;
+    font-size: x-large;
+    margin-left: 10px;
+}
+
+#right {
+    display: flex;
+    align-items: center;
+    width: 15%;
+    justify-content: space-around;
+    margin-right: 10px;
+}
+
+#user {
+    font-size: large;
+    font-weight: 500;
+}
+
+#home, #logout {
+    cursor: pointer;
+}
+
+

@@ -11,10 +11,10 @@ namespace AdminDashboard.Data.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar2(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar2(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar2(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar2(1000)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -25,23 +25,23 @@ namespace AdminDashboard.Data.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Company = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AgreeToTerms = table.Column<bool>(type: "bit", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar2(450)", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    Company = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    AgreeToTerms = table.Column<bool>(type: "NUMBER(1)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar2(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar2(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar2(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar2(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "NUMBER(1)", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "NUMBER(1)", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "NUMBER(1)", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "Timestamp", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "NUMBER(1)", nullable: false),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -55,18 +55,18 @@ namespace AdminDashboard.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StoreId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Region = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    Code = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    StoreId = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    TransactionDate = table.Column<DateTime>(type: "date", nullable: false),
                     TransactionId = table.Column<int>(type: "int", nullable: false),
-                    ProductGroup = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Sku = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductGroup = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    Sku = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
                     Amount = table.Column<double>(type: "float", nullable: false),
                     PromotionId = table.Column<int>(type: "int", nullable: false),
                     CustomerInfo = table.Column<int>(type: "int", nullable: false),
-                    PaymentType = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    PaymentType = table.Column<string>(type: "nvarchar2(1000)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -79,8 +79,8 @@ namespace AdminDashboard.Data.Migrations
                 {
                     TeamId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TeamName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TeamColor = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    TeamName = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    TeamColor = table.Column<string>(type: "nvarchar2(1000)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -93,9 +93,9 @@ namespace AdminDashboard.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    RoleId = table.Column<string>(type: "nvarchar2(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar2(1000)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -114,9 +114,9 @@ namespace AdminDashboard.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar2(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar2(1000)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -133,10 +133,10 @@ namespace AdminDashboard.Data.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "nvarchar2(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar2(128)", maxLength: 128, nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar2(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -153,8 +153,8 @@ namespace AdminDashboard.Data.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar2(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar2(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -177,10 +177,10 @@ namespace AdminDashboard.Data.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar2(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar2(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar2(128)", maxLength: 128, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar2(1000)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -200,17 +200,17 @@ namespace AdminDashboard.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TeamId = table.Column<int>(type: "int", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsOnline = table.Column<bool>(type: "bit", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    JobTitle = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    IsOnline = table.Column<bool>(type: "NUMBER(1)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     Target = table.Column<int>(type: "int", nullable: false),
                     Budget = table.Column<int>(type: "int", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar2(1000)", nullable: true),
                     ImgId = table.Column<int>(type: "int", nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Gender = table.Column<string>(type: "nvarchar2(1000)", nullable: true)
                 },
                 constraints: table =>
                 {
