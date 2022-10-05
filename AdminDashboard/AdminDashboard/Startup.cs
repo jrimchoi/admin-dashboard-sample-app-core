@@ -171,7 +171,7 @@ namespace AdminDashboard
             {
                 options.InputFormatters.Insert(0, new RawStringBodyInputFormatter());
             });
-            AppHttpContext.Services = (IServiceProvider)services;
+            AppHttpContext.Services = services.BuildServiceProvider();
             // for get session without controuctor 
 
         }

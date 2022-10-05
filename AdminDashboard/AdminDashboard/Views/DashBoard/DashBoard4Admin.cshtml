@@ -376,7 +376,7 @@
             }
  
             var params = {
-                url           : "/DashBoard/GetDashBoard4Admin",
+                url           : "GetDashBoard4Admin",
                 data         : "formCond",    
                 resultBind : {result0: "gridNote", result1: "gridTemplate",result2: "gridExp"},  
                 pageindex : isnull(pageindex, 1),
@@ -443,7 +443,7 @@
     function fnGoUserDashBoard(userId, userNm, teamCode){
         //window.location.href = "/DashBoard/DashBoard4User?USER_ID=" + userId + "&USER_NAME=" + userNm + "&TEAM_CODE=" + teamCode + "&EXP_NO=@ViewBag.ExpNo";
         var params = {USER_ID:userId, USER_NAME:userNm, TEAM_CODE:teamCode,  EXP_NO:'@ViewBag.ExpNo'}
-        Trans.postForm("/DashBoard/DashBoard4User", params, "post"); 
+        Trans.postForm("DashBoard/DashBoard4User", params, "post"); 
     };  
 
     // BU, TEAM combo 설정 
