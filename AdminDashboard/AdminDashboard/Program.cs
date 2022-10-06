@@ -39,28 +39,24 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        var _config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                // Read from your appsettings.json.
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json")
+                // Read from your secrets.
+                .AddUserSecrets<Program>(optional: true)
+                .AddEnvironmentVariables()
+                .Build();
+
+        Log.Logger = new LoggerConfiguration()
+                    .ReadFrom.Configuration(_config)
+                    .CreateLogger();
         CreateWebHostBuilder(args).Build().Run();
     }
 
-    public static IHostBuilder CreateWebHostBuilder(string[] args)
-    {
-        // temp initial logging
-        Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console()
-            .CreateBootstrapLogger();
+    public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        WebHost.CreateDefaultBuilder(args)
+            .UseSerilog()
+            .UseStartup<Startup>();
 
-        var builder = Host.CreateDefaultBuilder(args)
-                    .ConfigureWebHostDefaults(webHostBuilder
-                => webHostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
-                        _ = config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-                            .AddJsonFile("appsettings.json", false, true))
-                    .UseStartup<Startup>())
-            .UseSerilog(
-                (hostingContext, loggerConfig) =>
-                    loggerConfig
-                        .ReadFrom.Configuration(hostingContext.Configuration)
-                        .Enrich.FromLogContext(),
-                writeToProviders: true);
-        return builder;
-    }
 }
